@@ -25,24 +25,44 @@ getBucketMs = (config) ->
 getPrefix = (config) ->
     config.prefix or defaultPrefix
 
+getBucketIndex = (config, now) ->
+    Math.floor((now % config.timespanMs) / getBucketMs(config))
+
+getKey = (config, name) ->
+    getPrefix(config) + name
+
+getBucketKey = (config, name, now) ->
+    getPrefix(config) + name + ':' + getBucketIndex(config, now)
+
+getExpire = (config) ->
+    config.timespanMs
+
 module.exports =
 
-    increment: (config, key, n = 1, cb) ->
+    increment: (config, name, n, cb) ->
         checkConfig config
 
-        prefix = getPrefix config
+        config.redis.eval lua.increment, 1,
+            getBucketKey(config, name, Date.now()),
+            n,
+            getExpire(config),
+            cb
 
-        bucketIndex = Math.floor((Date.now() % config.timespanMs) / getBucketMs(config))
-
-        fullKey = prefix + key + ':' + bucketIndex
-
-        expire = config.timespanMs
-
-        config.redis.eval lua.increment, 1, fullKey, n, expire, cb
-
-    read: (config, key, cb) ->
+    incrementAndRead: (config, name, n, cb) ->
         checkConfig config
 
-        prefix = getPrefix config
+        config.redis.eval lua.incrementAndRead, 2,
+            getKey(config, name),
+            getBucketKey(config, name, Date.now()),
+            n,
+            getExpire(config),
+            config.bucketCount,
+            cb
 
-        config.redis.eval lua.read, 1, (prefix + key), config.bucketCount, cb
+    read: (config, name, cb) ->
+        checkConfig config
+
+        config.redis.eval lua.read, 1,
+            getKey(config, name),
+            config.bucketCount,
+            cb

@@ -1,2 +1,6 @@
-redis.call("INCRBY", KEYS[1], ARGV[1])
-redis.call("PEXPIRE", KEYS[1], ARGV[2])
+local bucket_key = KEYS[1]
+local n = ARGV[1]
+local expire = ARGV[2]
+
+redis.call("INCRBY", bucket_key, n)
+redis.call("PEXPIRE", bucket_key, expire)
