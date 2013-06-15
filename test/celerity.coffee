@@ -73,3 +73,21 @@ module.exports =
                         test.done()
 
                 setTimeout next, 110
+
+        'single bucket is incremented': (test) ->
+            config =
+                redis: this.redis
+                timespanMs: 100
+                bucketCount: 1
+
+            celerity.increment config, 'test', 1, (err) ->
+                throw err if err?
+                celerity.increment config, 'test', 1, (err) ->
+                    throw err if err?
+                    celerity.increment config, 'test', 1, (err) ->
+                        throw err if err?
+                        celerity.read config, 'test', (err, count) ->
+                            throw err if err?
+                            test.equals count, 3
+
+                            test.done()
