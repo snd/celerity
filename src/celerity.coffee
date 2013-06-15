@@ -32,7 +32,7 @@ getPrefix = (config) ->
     config.prefix or defaultPrefix
 
 getBucketIndex = (config, now) ->
-    Math.floor((now % config.timespanMs) / getBucketMs(config))
+    Math.floor((now % config.timespanMs) / getBucketMs(config)) + 1
 
 getKey = (config, name) ->
     getPrefix(config) + name
