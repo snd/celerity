@@ -18,6 +18,18 @@ module.exports =
 
     'single 100 ms bucket':
 
+        'read returns 0 initially': (test) ->
+            config =
+                redis: this.redis
+                timespanMs: 100
+                bucketCount: 1
+
+            celerity.read config, 'test', (err, count) ->
+                throw err if err?
+                test.equals count, 0
+
+                test.done()
+
         'incrementAndRead returns increment initially': (test) ->
             config =
                 redis: this.redis
