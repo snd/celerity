@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "celerity",
     "keywords": ["rate", "limiting", "throttle", "measure", "redis", "speed"],
-    "homepage": "http://github.com/snd/rate",
+    "homepage": "http://github.com/snd/celerity",
     "author": {
         "name": "Maximilian Krüger",
         "email": "kruemaxi@gmail.com",
