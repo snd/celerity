@@ -6,9 +6,7 @@ module.exports =
 
     'setUp': (done) ->
         this.redis = redis.createClient()
-
         this.redis.flushdb()
-
         done()
 
     'tearDown': (done) ->
