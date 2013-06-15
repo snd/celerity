@@ -72,4 +72,4 @@ module.exports =
                         test.equals count, 0
                         test.done()
 
-                setTimeout next, 100
+                setTimeout next, 110
