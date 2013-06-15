@@ -4,6 +4,8 @@ celerity = require '../src/celerity'
 
 module.exports =
 
+    # these tests assume 10 seconds latency
+
     'setUp': (done) ->
         this.redis = redis.createClient()
         this.redis.flushdb()
@@ -14,47 +16,48 @@ module.exports =
             throw err if err?
             done()
 
-    'incrementAndRead returns increment initially': (test) ->
-        config =
-            redis: this.redis
-            timespanMs: 20
-            bucketCount: 1
+    'single 100 ms bucket':
 
-        celerity.incrementAndRead config, 'test', 5, (err, count) ->
-            throw err if err?
-            test.equals count, 5
+        'incrementAndRead returns increment initially': (test) ->
+            config =
+                redis: this.redis
+                timespanMs: 100
+                bucketCount: 1
 
-            test.done()
+            celerity.incrementAndRead config, 'test', 5, (err, count) ->
+                throw err if err?
+                test.equals count, 5
 
-    'increment and then read returns increment initially': (test) ->
-        config =
-            redis: this.redis
-            timespanMs: 20
-            bucketCount: 1
+                test.done()
 
-        celerity.increment config, 'test', 5, (err) ->
-            throw err if err?
-            next = ->
-                celerity.read config, 'test', (err, count) ->
-                    throw err if err?
-                    test.equals count, 5
-                    test.done()
+        'increment and then read returns increment initially': (test) ->
+            config =
+                redis: this.redis
+                timespanMs: 100
+                bucketCount: 1
 
-            setTimeout next, 10
+            celerity.increment config, 'test', 5, (err) ->
+                throw err if err?
+                next = ->
+                    celerity.read config, 'test', (err, count) ->
+                        throw err if err?
+                        test.equals count, 5
+                        test.done()
 
+                setTimeout next, 90
 
-    'single bucket is cleared after timespan': (test) ->
-        config =
-            redis: this.redis
-            timespanMs: 20
-            bucketCount: 1
+        'single bucket is cleared after timespan': (test) ->
+            config =
+                redis: this.redis
+                timespanMs: 100
+                bucketCount: 1
 
-        celerity.increment config, 'test', 5, (err, count) ->
-            throw err if err?
-            next = ->
-                celerity.read config, 'test', (err, count) ->
-                    throw err if err?
-                    test.equals count, 0
-                    test.done()
+            celerity.increment config, 'test', 5, (err, count) ->
+                throw err if err?
+                next = ->
+                    celerity.read config, 'test', (err, count) ->
+                        throw err if err?
+                        test.equals count, 0
+                        test.done()
 
-            setTimeout next, 21
+                setTimeout next, 100
