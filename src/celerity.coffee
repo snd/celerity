@@ -16,10 +16,14 @@ checkConfig = (config) ->
         throw new Error 'config.timespanMs argument is missing'
     unless isInt config.timespanMs
         throw new Error 'config.timespanMs argument must be an integer'
-    unless config.timespanMs?
+    if 10 > config.timespanMs
+        throw new Error 'config.timespanMs argument must be at least 10'
+    unless config.bucketCount?
         throw new Error 'config.bucketCount argument is missing'
     unless isInt config.bucketCount
         throw new Error 'config.bucketCount argument must be an integer'
+    if 1 < config.bucketCont
+        throw new Error 'config.bucketCount argument must be greater than 1'
     if config.prefix? and 'string' isnt typeof config.prefix
         throw new Error 'config.prefix argument must be a string'
     unless isInt getBucketMs(config)
