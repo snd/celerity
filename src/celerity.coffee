@@ -45,7 +45,8 @@ getBucketKey = (config, name, now) ->
     getPrefix(config) + name + ':' + getBucketIndex(config, now)
 
 getExpire = (config) ->
-    config.timespanMs
+    # makes sure that the bucket is expired before it becomes current again
+    config.timespanMs - getBucketMs(config) / 2
 
 module.exports =
 
