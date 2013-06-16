@@ -43,7 +43,7 @@ buckets older than `timespan` expire every `timespan / bucketCount` milliseconds
 
 a higher `bucketCount` increases the frequency and accuracy of the expires
 but uses more memory and results in slower read operations.
-if your timespan is several seconds long it is usually accurate enough to have
+if your timespan is several seconds long it is usually enough to have
 a bucket for every second.
 
 use the `prefix` property to set a prefix for all redis keys used by celerity.
