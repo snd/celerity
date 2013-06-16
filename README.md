@@ -58,7 +58,7 @@ celerity.increment(config, 'event', 1, function(err) {
 });
 ```
 
-`increment` is atomic. complexity: O(1).
+atomic. complexity: O(1).
 
 ##### read(config, event, cb)
 
@@ -69,7 +69,7 @@ celerity.read(config, 'event', function(err, rate) {
 });
 ```
 
-`read` is atomic. complexity: O(n) where n is the `bucketCount`.
+atomic. complexity: O(n) where n is `bucketCount`.
 
 ##### incrementAndRead(config, event, n, cb)
 
@@ -80,6 +80,6 @@ celerity.incrementAndRead(config, 'event', 1, function(err, rate) {
 });
 ```
 
-`incrementAndRead` is atomic. complexity: O(n) where n is the `bucketCount`.
+is atomic. complexity: O(n) where n is `bucketCount`.
 
 ### license: MIT
