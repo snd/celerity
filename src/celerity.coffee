@@ -59,11 +59,15 @@ module.exports =
         unless 'function' is typeof cb
             throw new Error 'cb argument must be a function'
 
+        now = Date.now()
+
         config.redis.eval lua.increment, 1,
-            getBucketKey(config, name, Date.now()),
+            getBucketKey(config, name, now),
             increment,
             getExpire(config),
-            cb
+            (err) ->
+                return cb err if err?
+                cb null, getBucketIndex(config, now)
 
     incrementAndRead: (config, name, increment, cb) ->
         checkConfig config
@@ -74,13 +78,17 @@ module.exports =
         unless 'function' is typeof cb
             throw new Error 'cb argument must be a function'
 
+        now = Date.now()
+
         config.redis.eval lua.incrementAndRead, 2,
             getKey(config, name),
-            getBucketKey(config, name, Date.now()),
+            getBucketKey(config, name, now),
             increment,
             getExpire(config),
             config.bucketCount,
-            cb
+            (err, result) ->
+                return cb err if err?
+                cb null, result, getBucketIndex(config, now)
 
     read: (config, name, cb) ->
         checkConfig config
