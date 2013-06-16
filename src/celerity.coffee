@@ -92,3 +92,17 @@ module.exports =
             getKey(config, name),
             config.bucketCount,
             cb
+
+    buckets: (config, name, cb) ->
+        checkConfig config
+        unless 'string' is typeof name
+            throw new Error 'name argument must be a string'
+        unless 'function' is typeof cb
+            throw new Error 'cb argument must be a function'
+
+        config.redis.eval lua.buckets, 1,
+            getKey(config, name),
+            config.bucketCount,
+            (err, json) ->
+                return cb err if err?
+                cb null, JSON.parse(json)
