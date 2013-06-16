@@ -40,6 +40,7 @@ celerity keeps the rate for the last `timespan` milliseconds.
 `timespan` is divided into `bucketCount` buckets.
 the rate is stored in the buckets.
 buckets older than `timespan` expire every `timespan / bucketCount` milliseconds.
+
 a higher `bucketCount` increases the frequency and accuracy of the expires
 but uses more memory and results in slower read operations.
 if your timespan is several seconds long it is usually accurate enough to have
