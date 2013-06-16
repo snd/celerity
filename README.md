@@ -2,9 +2,7 @@
 
 [![Build Status](https://travis-ci.org/snd/celerity.png)](https://travis-ci.org/snd/celerity)
 
-celerity tracks the rate of events by using redis.
-
-it can be used to implement centralized rate limiting for web applications running
+celerity uses redis to do centralized rate limiting for applications running
 on multiple heroku dynos (or processes).
 
 ### install
@@ -12,6 +10,10 @@ on multiple heroku dynos (or processes).
 ```
 npm install celerity
 ```
+
+### example
+
+[see example.js for a simple rate limited webserver](example.js)
 
 ### use
 
@@ -28,39 +30,55 @@ var redis = require('redis');
 ```javascript
 var config = {
     redis: redis.createClient(),
-    timespanMs: 10 * 1000,
+    timespan: 10 * 1000,
     bucketCount: 10
 };
 ```
 
-##### increment the rate whenever an event occurs
+celerity keeps the rate for the last `timespan` milliseconds.
+
+`timespan` is divided into `bucketCount` buckets.
+the rate is stored in the buckets.
+buckets older than `timespan` expire every `timespan / bucketCount` milliseconds.
+a higher `bucketCount` increases the frequency and accuracy of the expires
+but uses more memory and results in slower read operations.
+if your timespan is several seconds long it is usually accurate enough to have
+a bucket for every second.
+
+use the `prefix` property to set a prefix for all redis keys used by celerity.
+the default prefix is `celerity:`.
+
+##### `increment(config, event, n, cb)`
 
 ```javascript
 celerity.increment(config, 'event', 1, function(err) {
-    // ...
+    if (err) throw err
+
 });
 ```
 
-##### read the current rate
+`increment` is atomic. complexity: O(1).
+
+##### `read(config, event, cb)`
 
 ```javascript
 celerity.read(config, 'event', function(err, rate) {
+    if (err) throw err
     console.log(rate);
 });
 ```
 
-### example
+`read` is atomic. complexity: O(n) where n is the `bucketCount`.
 
-see [example.js](example.js) for a simple rate limited webserver.
+##### `incrementAndRead(config, event, n, cb)`
 
-### api
+```javascript
+celerity.incrementAndRead(config, 'event', 1, function(err, rate) {
+    if (err) throw err
+    console.log(rate);
+});
+```
 
-all operations are atomic within redis.
-
-##### `celerity.increment(config, name, increment, function(err) {...})`
-
-##### `celerity.read(config, name, function(err, rate) {...})`
-
-##### `celerity.incrementAndRead(config, name, increment, function(err, rate) {...})`
+`incrementAndRead` is atomic. complexity: O(n) where n is the `bucketCount`.
 
 ### license: MIT
