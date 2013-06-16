@@ -2,4 +2,4 @@
 
 [![Build Status](https://travis-ci.org/snd/celerity.png)](https://travis-ci.org/snd/celerity)
 
-...more soon
+...more coming soon
