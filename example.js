@@ -19,19 +19,23 @@ var server = http.createServer(function(req, res) {
         return
     }
 
-    celerity.read(celerityConfig, 'requests', 1, function(err, rate) {
+    var ip = req.connection.remoteAddress;
+
+    celerity.incrementAndRead(celerityConfig, 'requests:' + ip, 1, function(err, rate) {
         if (err) {
             return res.end('there was an error');
         }
 
         if (rate > 10) {
-            return res.end('whoa. you are going way too fast');
+            return res.end("slow down. you are going too fast");
         }
 
-        res.end(rate + ' requests in the last 10 seconds');
+        res.end('there have been ' + rate + ' requests from your ip ' + ip + ' in the last 10 seconds');
     });
 });
 
-server.listen(8080);
+var port = process.argv[2] || 8080;
 
-console.log('go to port 8080');
+server.listen(port);
+
+console.log('go to port ' + port);
