@@ -7,7 +7,7 @@ var redisClient = redis.createClient();
 
 var celerityConfig = {
     redis: redisClient,
-    timespanMs: 10 * 1000,
+    timespan: 10 * 1000,
     bucketCount: 10
 };
 

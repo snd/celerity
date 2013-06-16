@@ -12,12 +12,12 @@ checkConfig = (config) ->
         throw new Error 'config argument must be an object'
     unless 'object' is typeof config.redis
         throw new Error 'config.redis argument must be an object'
-    unless config.timespanMs?
-        throw new Error 'config.timespanMs argument is missing'
-    unless isInt config.timespanMs
-        throw new Error 'config.timespanMs argument must be an integer'
-    if 10 > config.timespanMs
-        throw new Error 'config.timespanMs argument must be at least 10'
+    unless config.timespan?
+        throw new Error 'config.timespan argument is missing'
+    unless isInt config.timespan
+        throw new Error 'config.timespan argument must be an integer'
+    if 10 > config.timespan
+        throw new Error 'config.timespan argument must be at least 10'
     unless config.bucketCount?
         throw new Error 'config.bucketCount argument is missing'
     unless isInt config.bucketCount
@@ -27,16 +27,16 @@ checkConfig = (config) ->
     if config.prefix? and 'string' isnt typeof config.prefix
         throw new Error 'config.prefix argument must be a string'
     unless isInt getBucketMs(config)
-        throw new Error 'config.timespanMs must be evenly dividable by config.bucketCount'
+        throw new Error 'config.timespan must be evenly dividable by config.bucketCount'
 
 getBucketMs = (config) ->
-    config.timespanMs / config.bucketCount
+    config.timespan / config.bucketCount
 
 getPrefix = (config) ->
     config.prefix or defaultPrefix
 
 getBucketIndex = (config, now) ->
-    Math.floor((now % config.timespanMs) / getBucketMs(config))
+    Math.floor((now % config.timespan) / getBucketMs(config))
 
 getKey = (config, name) ->
     getPrefix(config) + name
@@ -46,7 +46,7 @@ getBucketKey = (config, name, now) ->
 
 getExpire = (config) ->
     # makes sure that the bucket is expired before it becomes current again
-    config.timespanMs - getBucketMs(config) / 2
+    config.timespan - getBucketMs(config) / 2
 
 module.exports =
 

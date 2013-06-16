@@ -17,7 +17,7 @@ module.exports =
     'read returns 0 initially': (test) ->
         config =
             redis: this.redis
-            timespanMs: 1000
+            timespan: 1000
             bucketCount: 10
 
         celerity.read config, 'test', (err, count) ->
@@ -33,7 +33,7 @@ module.exports =
     'incrementAndRead on empty bucket returns increment': (test) ->
         config =
             redis: this.redis
-            timespanMs: 1000
+            timespan: 1000
             bucketCount: 10
 
         celerity.incrementAndRead config, 'test', 5, (err, count, bucketIndex) ->
@@ -50,7 +50,7 @@ module.exports =
     'run over three timespans': (test) ->
         config =
             redis: this.redis
-            timespanMs: 300
+            timespan: 300
             bucketCount: 3
 
         incrementReadAndGetBuckets = (cb) ->
