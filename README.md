@@ -13,7 +13,7 @@ npm install celerity
 
 ### example
 
-[see example.js for a simple rate limited webserver](example.js)
+[see example.js for a simple rate limited webserver using celerity](example.js)
 
 ### use
 
