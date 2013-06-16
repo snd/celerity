@@ -173,7 +173,6 @@ module.exports =
                     # first bucket has expired
                     test.equals count, 4
                     test.deepEqual buckets, [0, 2, 2]
-                    test.done()
             710: ->
                 readAndGetBuckets (count, buckets) ->
                     console.log count, buckets
