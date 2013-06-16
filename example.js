@@ -7,8 +7,8 @@ var redisClient = redis.createClient();
 
 var celerityConfig = {
     redis: redisClient,
-    timespan: 10 * 1000,
-    bucketCount: 10
+    timespan: 10 * 1000, // keep rate for the last 10 seconds
+    bucketCount: 10 // a bucket for every second
 };
 
 var server = http.createServer(function(req, res) {
