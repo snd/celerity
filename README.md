@@ -49,7 +49,7 @@ a bucket for every second.
 use the `prefix` property to set a prefix for all redis keys used by celerity.
 the default prefix is `celerity:`.
 
-##### `increment(config, event, n, cb)`
+##### increment(config, event, n, cb)
 
 ```javascript
 celerity.increment(config, 'event', 1, function(err) {
@@ -60,7 +60,7 @@ celerity.increment(config, 'event', 1, function(err) {
 
 `increment` is atomic. complexity: O(1).
 
-##### `read(config, event, cb)`
+##### read(config, event, cb)
 
 ```javascript
 celerity.read(config, 'event', function(err, rate) {
@@ -71,7 +71,7 @@ celerity.read(config, 'event', function(err, rate) {
 
 `read` is atomic. complexity: O(n) where n is the `bucketCount`.
 
-##### `incrementAndRead(config, event, n, cb)`
+##### incrementAndRead(config, event, n, cb)
 
 ```javascript
 celerity.incrementAndRead(config, 'event', 1, function(err, rate) {
