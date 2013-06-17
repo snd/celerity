@@ -80,6 +80,6 @@ celerity.incrementAndRead(config, 'event', 1, function(err, rate) {
 });
 ```
 
-is atomic. complexity: O(n) where n is `bucketCount`.
+atomic. complexity: O(n) where n is `bucketCount`.
 
 ### license: MIT
