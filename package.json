@@ -1,7 +1,7 @@
 {
     "name": "celerity",
     "version": "0.1.0",
-    "description": "celerity",
+    "description": "celerity uses redis to do centralized rate limiting for applications running on multiple heroku dynos",
     "keywords": ["rate", "limiting", "throttle", "measure", "redis", "speed"],
     "homepage": "http://github.com/snd/celerity",
     "author": {
