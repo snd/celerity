@@ -54,7 +54,6 @@ the default prefix is `celerity:`.
 ```javascript
 celerity.increment(config, 'event', 1, function(err) {
     if (err) throw err
-
 });
 ```
 
