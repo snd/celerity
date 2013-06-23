@@ -53,7 +53,6 @@ the default prefix is `celerity:`.
 
 ```javascript
 celerity.increment(config, 'event', 1, function(err) {
-    if (err) throw err
 });
 ```
 
@@ -63,8 +62,6 @@ atomic. complexity: O(1).
 
 ```javascript
 celerity.read(config, 'event', function(err, rate) {
-    if (err) throw err
-    console.log(rate);
 });
 ```
 
@@ -74,8 +71,6 @@ atomic. complexity: O(n) where n is `bucketCount`.
 
 ```javascript
 celerity.incrementAndRead(config, 'event', 1, function(err, rate) {
-    if (err) throw err
-    console.log(rate);
 });
 ```
 
